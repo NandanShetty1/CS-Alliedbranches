@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Secure Stego Chat</title>
+	<link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+	<header>
+		<h1>Secure Stego Chat</h1>
+	</header>
+	<main>
+		<section class="controls">
+			<div class="field">
+				<label>Room</label>
+				<input id="roomInput" placeholder="e.g. team-room" autocomplete="off" />
+				<button id="joinBtn">Join</button>
+			</div>
+			<div class="field">
+				<label>Passphrase</label>
+				<input id="passphraseInput" type="password" placeholder="Shared secret" autocomplete="off" />
+			</div>
+		</section>
+		<section class="chat">
+			<div id="messages" class="messages"></div>
+			<div class="composer">
+				<textarea id="messageInput" placeholder="Type a message..."></textarea>
+				<div class="actions">
+					<input type="file" id="imageInput" accept="image/png,image/jpeg" />
+					<button id="sendBtn">Send</button>
+					<button id="sendStegoBtn" title="Hide message in PNG">Send Stego PNG</button>
+				</div>
+			</div>
+		</section>
+		<section class="decode">
+			<h3>Decode Stego Image</h3>
+			<input type="file" id="decodeInput" accept="image/png" />
+			<pre id="decodedOutput"></pre>
+		</section>
+	</main>
+	<script src="/socket.io/socket.io.js"></script>
+	<script type="module" src="/main.js"></script>
+</body>
+</html>
