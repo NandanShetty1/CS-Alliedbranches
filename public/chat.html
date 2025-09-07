@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Secure Chat - Room</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="container chat-layout">
+      <aside class="sidebar">
+        <h2>Room</h2>
+        <div class="field">
+          <label>Room name
+            <input id="room" type="text" placeholder="e.g. alpha" />
+          </label>
+        </div>
+        <div class="field">
+          <label>Passphrase (E2EE)
+            <input id="passphrase" type="password" placeholder="Shared secret" />
+          </label>
+        </div>
+        <div class="field">
+          <label>Display name
+            <input id="displayName" type="text" />
+          </label>
+        </div>
+        <button id="join">Join Room</button>
+        <button id="leave" disabled>Leave Room</button>
+        <h3>Participants</h3>
+        <ul id="users"></ul>
+        <button id="logout">Logout</button>
+      </aside>
+
+      <main class="chat">
+        <div id="messages" class="messages"></div>
+        <div class="composer">
+          <input id="message" type="text" placeholder="Write a message" />
+          <label class="checkbox">
+            <input id="useStego" type="checkbox" /> Use Steganography
+          </label>
+          <input id="image" type="file" accept="image/png,image/jpeg" />
+          <button id="send">Send</button>
+        </div>
+      </main>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="/js/app.js"></script>
+  </body>
+  </html>
+

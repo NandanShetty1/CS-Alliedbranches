@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Secure Chat - Login</title>
+    <link rel="stylesheet" href="/css/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Secure Chat</h1>
+
+      <div class="card">
+        <h2>Register</h2>
+        <form id="register-form">
+          <label>Username
+            <input id="reg-username" type="text" required />
+          </label>
+          <label>Display name
+            <input id="reg-display" type="text" placeholder="Optional" />
+          </label>
+          <label>Password
+            <input id="reg-password" type="password" required />
+          </label>
+          <button type="submit">Create account</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Login</h2>
+        <form id="login-form">
+          <label>Username
+            <input id="login-username" type="text" required />
+          </label>
+          <label>Password
+            <input id="login-password" type="password" required />
+          </label>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      async function postJSON(url, body) {
+        const res = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data?.error || 'Request failed');
+        return data;
+      }
+
+      document.getElementById('register-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          const username = document.getElementById('reg-username').value.trim();
+          const displayName = document.getElementById('reg-display').value.trim();
+          const password = document.getElementById('reg-password').value;
+          const { token, user } = await postJSON('/api/register', { username, displayName, password });
+          localStorage.setItem('token', token);
+          localStorage.setItem('displayName', user.displayName);
+          localStorage.setItem('username', user.username);
+          window.location.href = '/chat.html';
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+
+      document.getElementById('login-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          const username = document.getElementById('login-username').value.trim();
+          const password = document.getElementById('login-password').value;
+          const { token, user } = await postJSON('/api/login', { username, password });
+          localStorage.setItem('token', token);
+          localStorage.setItem('displayName', user.displayName);
+          localStorage.setItem('username', user.username);
+          window.location.href = '/chat.html';
+        } catch (err) {
+          alert(err.message);
+        }
+      });
+    </script>
+  </body>
+  </html>
+
