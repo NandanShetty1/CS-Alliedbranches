@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Steganography Chat</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Login/Register Modal -->
+    <div id="authModal" class="modal">
+        <div class="modal-content">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h2 id="authTitle">Login to Secure Chat</h2>
+                    <p id="authSubtitle">Enter your credentials to access the secure chat</p>
+                </div>
+                
+                <form id="authForm">
+                    <div class="form-group" id="usernameGroup">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    
+                    <div class="form-group" id="emailGroup" style="display: none;">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    
+                    <button type="submit" id="authButton" class="btn btn-primary">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </button>
+                </form>
+                
+                <div class="auth-switch">
+                    <p id="authSwitchText">Don't have an account?</p>
+                    <button id="authSwitchButton" class="btn-link">Register here</button>
+                </div>
+                
+                <div id="authError" class="error-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Chat Application -->
+    <div id="chatApp" class="chat-app" style="display: none;">
+        <!-- Header -->
+        <header class="chat-header">
+            <div class="header-left">
+                <h1><i class="fas fa-shield-alt"></i> Secure Steganography Chat</h1>
+                <div class="connection-status">
+                    <span id="connectionStatus" class="status-disconnected">
+                        <i class="fas fa-circle"></i> Disconnected
+                    </span>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="user-info">
+                    <span id="currentUser">User</span>
+                    <button id="logoutButton" class="btn btn-secondary">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="chat-main">
+            <!-- Sidebar -->
+            <aside class="chat-sidebar">
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-comments"></i> Room</h3>
+                    <div class="room-controls">
+                        <input type="text" id="roomInput" placeholder="Enter room ID" value="general">
+                        <button id="joinRoomButton" class="btn btn-primary">
+                            <i class="fas fa-door-open"></i> Join
+                        </button>
+                    </div>
+                    <div class="current-room">
+                        <strong>Current Room:</strong> <span id="currentRoom">Not joined</span>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-cog"></i> Security Options</h3>
+                    <div class="security-controls">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="encryptMessages">
+                            <span class="checkmark"></span>
+                            Encrypt Messages
+                        </label>
+                        <div class="encryption-key-group" style="display: none;">
+                            <label for="encryptionKey">Encryption Key:</label>
+                            <input type="password" id="encryptionKey" placeholder="Enter encryption key">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-section">
+                    <h3><i class="fas fa-image"></i> Steganography</h3>
+                    <div class="stego-controls">
+                        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                        <button id="uploadImageButton" class="btn btn-secondary">
+                            <i class="fas fa-upload"></i> Upload Image
+                        </button>
+                        <button id="generateTestImage" class="btn btn-secondary">
+                            <i class="fas fa-magic"></i> Generate Test Image
+                        </button>
+                    </div>
+                    <div id="imagePreview" class="image-preview"></div>
+                </div>
+            </aside>
+
+            <!-- Chat Area -->
+            <div class="chat-content">
+                <!-- Messages Container -->
+                <div class="messages-container">
+                    <div id="messagesArea" class="messages-area">
+                        <div class="welcome-message">
+                            <i class="fas fa-shield-alt"></i>
+                            <h3>Welcome to Secure Steganography Chat</h3>
+                            <p>Your messages are protected with advanced encryption and steganography.</p>
+                            <ul>
+                                <li><i class="fas fa-lock"></i> End-to-end encryption available</li>
+                                <li><i class="fas fa-image"></i> Hide messages in images using steganography</li>
+                                <li><i class="fas fa-users"></i> Secure room-based communication</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Input -->
+                <div class="message-input-container">
+                    <div class="input-controls">
+                        <button id="steganographyMode" class="btn btn-icon" title="Toggle Steganography Mode">
+                            <i class="fas fa-image"></i>
+                        </button>
+                        <button id="extractMode" class="btn btn-icon" title="Extract Message from Image">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="message-input-wrapper">
+                        <textarea id="messageInput" placeholder="Type your message..." rows="2"></textarea>
+                        <button id="sendButton" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    
+                    <!-- Steganography Panel -->
+                    <div id="steganographyPanel" class="steganography-panel" style="display: none;">
+                        <div class="panel-header">
+                            <h4><i class="fas fa-image"></i> Hide Message in Image</h4>
+                            <button id="closeStegoPanel" class="btn btn-icon">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="panel-content">
+                            <div class="stego-image-container">
+                                <div id="stegoImagePreview" class="stego-image-preview">
+                                    <p>No image selected. Upload an image or generate a test image.</p>
+                                </div>
+                            </div>
+                            <div class="stego-controls">
+                                <textarea id="stegoMessage" placeholder="Enter message to hide in image..." rows="3"></textarea>
+                                <div class="stego-actions">
+                                    <button id="hideMsgButton" class="btn btn-primary">
+                                        <i class="fas fa-eye-slash"></i> Hide Message
+                                    </button>
+                                    <button id="sendStegoButton" class="btn btn-success">
+                                        <i class="fas fa-paper-plane"></i> Send Hidden Message
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Extract Panel -->
+                    <div id="extractPanel" class="extract-panel" style="display: none;">
+                        <div class="panel-header">
+                            <h4><i class="fas fa-search"></i> Extract Hidden Message</h4>
+                            <button id="closeExtractPanel" class="btn btn-icon">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                        <div class="panel-content">
+                            <div class="extract-instructions">
+                                <p>Click on any image in the chat to try extracting a hidden message.</p>
+                            </div>
+                            <div id="extractResult" class="extract-result"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p id="loadingText">Processing...</p>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
